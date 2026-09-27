@@ -1,0 +1,17 @@
+# gaia-local: counterparty chain for IBC experiments. See docs/09-ibc-transfer.png.
+#   make ibc-up   (Hermes runs on the host, not in compose)
+name: potato-ibc
+
+services:
+  gaia:
+    image: ghcr.io/cosmos/gaia:v28.0.0
+    platform: linux/amd64   # upstream publishes amd64 only; runs via Rosetta on Apple silicon
+    user: root              # dev: write the bind-mounted home without uid juggling
+    entrypoint: ["/bin/sh", "/init.sh"]
+    restart: unless-stopped
+    volumes:
+      - ./gaia/init.sh:/init.sh:ro
+      - ../.localnet/gaia:/root/.gaia
+    ports:
+      - "27657:26657"  # CometBFT RPC
+      - "9092:9090"    # gRPC

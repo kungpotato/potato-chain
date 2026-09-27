@@ -1,0 +1,81 @@
+# Hermes v1.13.3 config: potato-1 (cosmos/evm) <-> gaia-local. See docs/09-ibc-transfer.png.
+# Officially Hermes supports up to SDK 0.53 / CometBFT 0.38 / ibc-go v10; potato-1 runs
+# SDK 0.54 / CometBFT 0.39 / ibc-go v11, so treat potato-1 support as experimental.
+
+[global]
+log_level = 'info'
+
+[mode.clients]
+enabled = true
+refresh = true
+misbehaviour = false
+
+[mode.connections]
+enabled = false
+
+[mode.channels]
+enabled = false
+
+[mode.packets]
+enabled = true
+clear_interval = 20
+clear_on_start = true
+tx_confirmation = true
+
+[rest]
+enabled = false
+host = '127.0.0.1'
+port = 3000
+
+[telemetry]
+enabled = false
+host = '127.0.0.1'
+port = 3001
+
+[[chains]]
+id = 'potato-1'
+type = 'CosmosSdk'
+rpc_addr = 'http://localhost:26657'
+grpc_addr = 'http://localhost:9090'
+event_source = { mode = 'pull', interval = '1s' }
+rpc_timeout = '10s'
+account_prefix = 'potato'
+key_name = 'relayer'
+key_store_type = 'Test'
+store_prefix = 'ibc'
+default_gas = 300000
+max_gas = 5000000
+gas_price = { price = 10000000, denom = 'apotato' }
+gas_multiplier = 1.5
+max_msg_num = 30
+max_tx_size = 180000
+clock_drift = '5s'
+max_block_time = '10s'
+trusting_period = '14days'   # must be < unbonding_time (21d)
+trust_threshold = '2/3'
+compat_mode = '0.38'         # closest mode Hermes knows; potato runs CometBFT 0.39
+# cosmos/evm accounts: eth_secp256k1 keys, coin type 60, keccak addresses
+address_type = { derivation = 'ethermint', proto_type = { pk_type = '/cosmos.evm.crypto.v1.ethsecp256k1.PubKey' } }
+
+[[chains]]
+id = 'gaia-local'
+type = 'CosmosSdk'
+rpc_addr = 'http://localhost:27657'
+grpc_addr = 'http://localhost:9092'
+event_source = { mode = 'pull', interval = '1s' }
+rpc_timeout = '10s'
+account_prefix = 'cosmos'
+key_name = 'relayer'
+key_store_type = 'Test'
+store_prefix = 'ibc'
+default_gas = 300000
+max_gas = 5000000
+gas_price = { price = 0.005, denom = 'uatom' }
+gas_multiplier = 1.5
+max_msg_num = 30
+max_tx_size = 180000
+clock_drift = '5s'
+max_block_time = '30s'      # gaia's consensus param
+trusting_period = '14days'
+trust_threshold = '2/3'
+compat_mode = '0.38'

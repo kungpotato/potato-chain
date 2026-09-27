@@ -88,3 +88,23 @@ smoke-indexer:
 
 deploy-oracle:  ## POTATO/USD feed -> deployments json (Feed_POTATO_USD)
 	. scripts/lib.sh && cd contracts && forge script script/DeployOracle.s.sol --rpc-url potato_local --private-key $$DEV0_PRIVKEY --broadcast
+
+# ---- IBC: gaia-local + Hermes (needs localnet) ----
+.PHONY: ibc-up ibc-down hermes-keys ibc-channel relayer
+
+ibc-up:
+	scripts/install_hermes.sh
+	mkdir -p .localnet/gaia && docker-compose -f ibc/docker-compose.yml up -d
+
+ibc-down:
+	docker-compose -f ibc/docker-compose.yml down
+
+hermes-keys:  ## relayer keys for both chains (potato: eth HD path, funded by faucet)
+	scripts/hermes_keys.sh
+
+ibc-channel:  ## one-time: clients + connection + transfer channel-0
+	tools/bin/hermes --config ibc/hermes/config.toml create channel --a-chain potato-1 --b-chain gaia-local \
+	  --a-port transfer --b-port transfer --new-client-connection --yes
+
+relayer:
+	tools/bin/hermes --config ibc/hermes/config.toml start
