@@ -49,4 +49,5 @@ services:
       - ./.localnet/node3:/root/.potatod
 
 networks:
-  potato-net: {}
+  potato-net:
+    name: potato-net  # fixed name so explorer/docker-compose.yml can join it
