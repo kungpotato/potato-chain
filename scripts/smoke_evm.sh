@@ -23,4 +23,14 @@ assert "transfer 1 POTATO dev0 -> $to (block $(( $(jq -r .blockNumber <<<"$recei
 bech=$("$BIN" debug addr "${to#0x}" | awk '/Bech32 Acc/{print $3}')
 amt=$(curl -sf "${REST:-http://localhost:1317}/cosmos/bank/v1beta1/balances/$bech" | jq -r ".balances[] | select(.denom==\"$DENOM\") | .amount")
 assert "cosmos bank sees $bech = 1 POTATO" test "$amt" = 1000000000000000000
+# contract: deploy -> write -> read -> event (docs/known-issues.md: never query logs from block 0)
+(cd "$ROOT/contracts" && forge build -q)
+dep=$(cd "$ROOT/contracts" && forge create src/Counter.sol:Counter --private-key "$DEV0_PRIVKEY" --broadcast --json)
+counter=$(jq -r .deployedTo <<<"$dep")
+assert "deploy Counter at $counter" test "$(cast code "$counter")" != 0x
+inc=$(cast send "$counter" 'increment()' --private-key "$DEV0_PRIVKEY" --json)
+assert "increment() -> number() == 1" test "$(cast call "$counter" 'number()(uint256)')" = 1
+blk=$(jq -r .blockNumber <<<"$inc")
+logs=$(cast rpc eth_getLogs "{\"address\":\"$counter\",\"fromBlock\":\"$blk\",\"toBlock\":\"latest\"}" | jq length)
+assert "eth_getLogs sees exactly 1 Incremented event" test "$logs" = 1
 echo "smoke test passed"
