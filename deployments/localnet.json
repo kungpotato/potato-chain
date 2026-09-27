@@ -4,5 +4,6 @@
   "UniswapV2Factory": "0x53F807E5ff81974642F84A78E725e8cDc756a9CE",
   "UniswapV2Router02": "0x18Ab0F92ffb8b4f07f2d95b193bAFD377Ab25cC4",
   "WPOTATO": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
-  "chainId": 707070
+  "chainId": 707070,
+  "startBlock": 195
 }

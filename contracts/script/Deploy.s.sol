@@ -19,6 +19,9 @@ contract Deploy is Script {
 
     function run() external {
         string memory network = vm.envOr("NETWORK", string("localnet"));
+        // Lower bound for indexers: txs land at or after the block forge simulated against.
+        // Never let indexers start at 0 (docs/known-issues.md: getLogs fromBlock=0 bug).
+        uint256 startBlock = block.number;
         vm.startBroadcast();
         address deployer = msg.sender;
 
@@ -33,6 +36,7 @@ contract Deploy is Script {
 
         string memory o = "deployments";
         vm.serializeUint(o, "chainId", block.chainid);
+        vm.serializeUint(o, "startBlock", startBlock);
         vm.serializeAddress(o, "WPOTATO", WPOTATO);
         vm.serializeAddress(o, "USDC", address(usdc));
         vm.serializeAddress(o, "UniswapV2Factory", factory);
