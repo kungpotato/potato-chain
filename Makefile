@@ -125,3 +125,12 @@ deploy-lending:  ## Morpho + WPOTATO/USDC market (LLTV 77%) + 10k USDC supply
 
 smoke-lending:
 	scripts/smoke_lending.sh
+
+# ---- Chain upgrade drill (x/gov + x/upgrade; one-shot per chain) ----
+.PHONY: upgrade-image upgrade-drill
+
+upgrade-image:  ## pre-stage the next binary as potato-chain/potatod:v2
+	docker build -t potato-chain/potatod:v2 --build-arg VERSION=$(VERSION) --build-arg COMMIT=$(COMMIT) .
+
+upgrade-drill:
+	scripts/upgrade_drill.sh

@@ -70,6 +70,12 @@ make deploy-lending   # Morpho Blue v1.0.0 + WPOTATO/USDC market, LLTV 77%, Pota
 make smoke-lending    # collateral -> borrow -> price drop -> liquidate, on the real chain
 ```
 
+Upgrade drill (see `docs/12-gov-upgrade.png`): propose `potato-v2` -> 4 validators vote -> all halt at H -> swap image -> resume with block gas 30M.
+
+```bash
+make upgrade-image && make upgrade-drill
+```
+
 | Identity | Value |
 |---|---|
 | Cosmos chain-id | `potato-1` |
