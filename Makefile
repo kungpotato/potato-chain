@@ -55,3 +55,18 @@ explorer-down:
 
 explorer-reset:  ## wipe indexed data (needed after localnet-init)
 	docker-compose -f explorer/docker-compose.yml down -v
+
+# ---- Week 3: money + DEX (needs localnet) ----
+.PHONY: contracts-test deploy seed-pool smoke-dex
+
+contracts-test:
+	cd contracts && forge test
+
+deploy:  ## MockUSDC + Uniswap v2 -> deployments/localnet.json
+	. scripts/lib.sh && cd contracts && forge script script/Deploy.s.sol --rpc-url potato_local --private-key $$DEV0_PRIVKEY --broadcast
+
+seed-pool:
+	scripts/seed_pool.sh
+
+smoke-dex:
+	scripts/smoke_dex.sh
