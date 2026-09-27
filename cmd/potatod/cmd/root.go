@@ -20,7 +20,6 @@ import (
 	cosmosevmserver "github.com/cosmos/evm/server"
 	srvflags "github.com/cosmos/evm/server/flags"
 	"github.com/cosmos/evm/utils"
-	"github.com/cosmos/evm/x/vm/types"
 
 	"cosmossdk.io/log/v2"
 	confixcmd "cosmossdk.io/tools/confix/cmd"
@@ -83,8 +82,8 @@ func NewRootCmd() *cobra.Command {
 		WithLedgerHasProtobuf(true)
 
 	rootCmd := &cobra.Command{
-		Use:   "evmd",
-		Short: "exemplary Cosmos EVM app",
+		Use:   "potatod",
+		Short: "potato-chain node daemon",
 		PersistentPreRunE: func(cmd *cobra.Command, _ []string) error {
 			// set the default command outputs
 			cmd.SetOut(cmd.OutOrStdout())
@@ -125,7 +124,7 @@ func NewRootCmd() *cobra.Command {
 				return err
 			}
 
-			customAppTemplate, customAppConfig := config.InitAppConfig(types.DefaultEVMExtendedDenom, types.DefaultEVMChainID) // TODO:VLAD - Remove this
+			customAppTemplate, customAppConfig := config.InitAppConfig(config.BaseDenom, config.EVMChainID)
 			customTMConfig := initCometConfig()
 
 			return sdkserver.InterceptConfigsPreRunHandler(cmd, customAppTemplate, customAppConfig, customTMConfig)

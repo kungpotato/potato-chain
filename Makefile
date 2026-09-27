@@ -1,5 +1,5 @@
-BINARY   ?= evmd
-MAIN_PKG := ./cmd/evmd
+BINARY   ?= potatod
+MAIN_PKG := ./cmd/potatod
 BUILDDIR ?= $(CURDIR)/build
 
 VERSION := $(shell git describe --tags --always --dirty 2>/dev/null || echo dev)
