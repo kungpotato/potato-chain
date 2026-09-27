@@ -3,6 +3,7 @@ import { formatUnits } from "viem";
 import { useBalance, useConnect, useConnection, useConnectors, useDisconnect, useReadContract, useSwitchChain } from "wagmi";
 import { addr, potato } from "./chain";
 import { erc20Abi } from "./abis";
+import { Market, Swap } from "./Swap";
 
 function short(a: string) {
   return `${a.slice(0, 6)}…${a.slice(-4)}`;
@@ -90,6 +91,8 @@ export default function App() {
       </header>
       <Balances />
       <Faucet />
+      <Market />
+      <Swap />
     </main>
   );
 }
