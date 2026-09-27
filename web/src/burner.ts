@@ -38,12 +38,19 @@ export function burnerProvider() {
         return account.signMessage({ message: { raw: (params as [Hex])[0] } });
       case "eth_sendTransaction": {
         const [tx] = params as [{ to?: Hex; data?: Hex; value?: Hex; gas?: Hex }];
-        return wallet.sendTransaction({
-          to: tx.to,
-          data: tx.data,
-          value: tx.value ? BigInt(tx.value) : undefined,
-          gas: tx.gas ? BigInt(tx.gas) : undefined,
-        });
+        const value = tx.value ? BigInt(tx.value) : undefined;
+        // Always pass an explicit gas limit: otherwise viem fills the tx via eth_fillTransaction,
+        // which on cosmos/evm v0.7.3 estimates against block 0 (docs/known-issues.md) and returns
+        // intrinsic gas only -> contract calls run out of gas.
+        // Raw eth_estimateGas on purpose: viem's estimateGas with a local account also goes through
+        // eth_fillTransaction and inherits the same bad number.
+        const estimate = async () =>
+          BigInt(await pub.request({
+            method: "eth_estimateGas",
+            params: [{ from: account.address, to: tx.to, data: tx.data, value: tx.value }],
+          } as never));
+        const gas = tx.gas ? BigInt(tx.gas) : ((await estimate()) * 12n) / 10n;
+        return wallet.sendTransaction({ to: tx.to, data: tx.data, value, gas });
       }
       default:
         return pub.request({ method, params } as never);
