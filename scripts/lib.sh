@@ -10,6 +10,7 @@ KEYALGO="eth_secp256k1"
 
 # Well-known cosmos/evm dev mnemonic (public, never use outside localnet).
 DEV0_MNEMONIC="copper push brief egg scan entry inform record adjust fossil boss egg comic alien upon aspect dry avoid interest fury window hint race symptom" # 0xC6Fe5D33615a1C52c08018c47E8Bc53646A0E101
+DEV0_PRIVKEY="0x88cbead91aee890d27bf06e003ade3d4e952427e88f88d31d61d3ef5e5d54305" # same dev0, public (gitleaks:allow)
 
 command -v jq >/dev/null || { echo "jq is required" >&2; exit 1; }
 

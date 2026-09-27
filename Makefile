@@ -35,3 +35,7 @@ localnet-down:
 
 localnet-logs:
 	docker-compose logs -f --tail=50
+
+.PHONY: smoke
+smoke:  ## EVM end-to-end check against a running chain
+	scripts/smoke_evm.sh
