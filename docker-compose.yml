@@ -1,0 +1,52 @@
+# 4-validator potato-chain localnet. Generate homes first: scripts/localnet_init.sh
+# See docs/03-localnet-docker.png.
+x-potatod: &potatod
+  image: potato-chain/potatod:dev
+  build: .
+  restart: unless-stopped
+  networks: [potato-net]
+  command:
+    - start
+    - --home=/root/.potatod
+    - --chain-id=potato-1
+    - --minimum-gas-prices=0apotato
+    - --evm.min-tip=0
+    - --json-rpc.api=eth,txpool,net,web3,debug
+
+services:
+  node0:
+    <<: *potatod
+    container_name: potato-node0
+    hostname: node0
+    volumes:
+      - ./.localnet/node0:/root/.potatod
+    ports:  # only node0 is reachable from the host
+      - "26657:26657"  # CometBFT RPC
+      - "8545:8545"    # EVM JSON-RPC
+      - "8546:8546"    # EVM WebSocket
+      - "1317:1317"    # Cosmos REST
+      - "9090:9090"    # gRPC
+
+  node1:
+    <<: *potatod
+    container_name: potato-node1
+    hostname: node1
+    volumes:
+      - ./.localnet/node1:/root/.potatod
+
+  node2:
+    <<: *potatod
+    container_name: potato-node2
+    hostname: node2
+    volumes:
+      - ./.localnet/node2:/root/.potatod
+
+  node3:
+    <<: *potatod
+    container_name: potato-node3
+    hostname: node3
+    volumes:
+      - ./.localnet/node3:/root/.potatod
+
+networks:
+  potato-net: {}

@@ -20,3 +20,18 @@ install:
 
 clean:
 	rm -rf $(BUILDDIR)
+
+# ---- 4-validator docker localnet ----
+.PHONY: localnet-init localnet-up localnet-down localnet-logs
+
+localnet-init:
+	scripts/localnet_init.sh
+
+localnet-up:
+	docker-compose up -d --build
+
+localnet-down:
+	docker-compose down
+
+localnet-logs:
+	docker-compose logs -f --tail=50

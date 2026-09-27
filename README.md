@@ -20,6 +20,14 @@ scripts/local_node.sh          # fresh single-validator chain (~1s blocks)
 scripts/local_node.sh --keep   # restart with existing data
 ```
 
+4-validator localnet (docker, see `docs/03-localnet-docker.png`):
+
+```bash
+make localnet-init   # generate .localnet/node0..3 (keys + shared genesis)
+make localnet-up     # build image + start 4 containers (node0 exposes RPC ports)
+make localnet-down
+```
+
 | Identity | Value |
 |---|---|
 | Cosmos chain-id | `potato-1` |
