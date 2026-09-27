@@ -39,3 +39,19 @@ localnet-logs:
 .PHONY: smoke
 smoke:  ## EVM end-to-end check against a running chain
 	scripts/smoke_evm.sh
+
+# ---- Blockscout explorer (needs localnet running) ----
+.PHONY: explorer-up explorer-down explorer-reset
+
+explorer/.env:
+	@printf 'POSTGRES_PASSWORD=%s\nSECRET_KEY_BASE=%s\n' "$$(openssl rand -hex 16)" "$$(openssl rand -base64 48 | tr -d '\n')" > $@
+	@echo "generated $@ (local secrets, gitignored)"
+
+explorer-up: explorer/.env
+	docker-compose -f explorer/docker-compose.yml up -d
+
+explorer-down:
+	docker-compose -f explorer/docker-compose.yml down
+
+explorer-reset:  ## wipe indexed data (needed after localnet-init)
+	docker-compose -f explorer/docker-compose.yml down -v
