@@ -12,6 +12,7 @@ RAMPS = {  # light-mode stops: fill(50), stroke(600), title(800), subtitle(600)
     "gray": ("#F1EFE8", "#5F5E5A", "#444441", "#5F5E5A"),
     "purple": ("#EEEDFE", "#534AB7", "#3C3489", "#534AB7"),
     "coral": ("#FAECE7", "#993C1D", "#712B13", "#993C1D"),
+    "amber": ("#FAEEDA", "#854F0B", "#633806", "#854F0B"),
 }
 CHROME = "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
 
