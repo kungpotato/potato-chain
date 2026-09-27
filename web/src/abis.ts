@@ -6,3 +6,9 @@ export const routerAbi = parseAbi([
   "function swapExactETHForTokens(uint256 amountOutMin, address[] path, address to, uint256 deadline) payable returns (uint256[] amounts)",
   "function swapExactTokensForETH(uint256 amountIn, uint256 amountOutMin, address[] path, address to, uint256 deadline) returns (uint256[] amounts)",
 ]);
+
+export const bridgeAbi = parseAbi([
+  "function bridge(string receiver) payable returns (uint64 sequence)",
+  "function channel() view returns (string)",
+  "event Bridged(address indexed from, string receiver, uint256 amount, uint64 sequence)",
+]);
