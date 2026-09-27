@@ -7,8 +7,8 @@ EVM-compatible Cosmos appchain for learning, built block by block on top of
 
 | Week | Blocks | Status |
 |------|--------|--------|
-| 1 | ① Consensus (CometBFT) + ② Execution (Cosmos SDK + EVM) | in progress |
-| 2 | ④ JSON-RPC, wallets (MetaMask/Keplr), explorer, faucet | — |
+| 1 | ① Consensus (CometBFT) + ② Execution (Cosmos SDK + EVM) | done |
+| 2 | ④ JSON-RPC, wallets (MetaMask/Keplr), explorer, faucet | done (Keplr pending) |
 | 3 | ⑦ ⑧ Preinstalls, WETH-like token, mock USDC, DEX | — |
 | 4-5 | ⑥ IBC/Hyperlane bridge, oracle, indexer | — |
 | 6 | Lending, frontend, `x/gov` upgrade drill | — |
@@ -26,6 +26,14 @@ scripts/local_node.sh --keep   # restart with existing data
 make localnet-init   # generate .localnet/node0..3 (keys + shared genesis)
 make localnet-up     # build image + start 4 containers (node0 exposes RPC ports)
 make localnet-down
+```
+
+Explorer + faucet (needs the localnet, see `docs/05-explorer-faucet.png`):
+
+```bash
+make explorer-up                          # Blockscout at http://localhost
+scripts/faucet.sh <0x...|potato1...> 10   # send 10 POTATO from dev0 (max 100)
+make smoke                                # end-to-end EVM check
 ```
 
 | Identity | Value |
