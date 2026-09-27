@@ -50,6 +50,8 @@ Indexer (weeks 4-5, see `docs/07-indexer.png`):
 ```bash
 make indexer-install && make indexer-dev   # Ponder -> http://localhost:42069/graphql
 make smoke-indexer                         # swap on-chain, assert indexer == getReserves()
+make deploy-oracle                         # POTATO/USD mock feed (Chainlink ABI), see docs/08-oracle.png
+scripts/oracle_push.sh 2.15                # push a price (dev stand-in for a keeper)
 ```
 
 | Identity | Value |

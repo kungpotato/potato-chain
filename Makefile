@@ -82,3 +82,9 @@ indexer-dev:  ## GraphQL at http://localhost:42069/graphql
 
 smoke-indexer:
 	scripts/smoke_indexer.sh
+
+# ---- Oracle (mock Chainlink feed; needs localnet) ----
+.PHONY: deploy-oracle
+
+deploy-oracle:  ## POTATO/USD feed -> deployments json (Feed_POTATO_USD)
+	. scripts/lib.sh && cd contracts && forge script script/DeployOracle.s.sol --rpc-url potato_local --private-key $$DEV0_PRIVKEY --broadcast
