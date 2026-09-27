@@ -1,0 +1,9 @@
+{
+  "name": "potato-capture",
+  "private": true,
+  "type": "module",
+  "description": "Screenshots and GIF demos for the README (uses the local Chrome via puppeteer-core)",
+  "dependencies": {
+    "puppeteer-core": "^24.0.0"
+  }
+}
