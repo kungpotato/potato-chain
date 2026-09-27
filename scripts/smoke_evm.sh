@@ -14,6 +14,12 @@ assert "chain-id 707070" test "$(cast chain-id)" = 707070
 h1=$(cast block-number); sleep 2; h2=$(cast block-number)
 assert "blocks advancing ($h1 -> $h2)" test "$h2" -gt "$h1"
 
+# genesis preinstalls (see genesis_basics.go)
+for pre in Create2:0x4e59b44847b379578588920ca78fbf26c0b4956c Multicall3:0xcA11bde05977b3631167028862bE2a173976CA11 \
+           Permit2:0x000000000022D473030F116dDEE9F6B43aC78BA3 SafeFactory:0x914d7Fec6aaC8cd542e72Bca78B30650d45643d7; do
+  assert "preinstall ${pre%%:*} has code" test "$(cast codesize "${pre#*:}")" -gt 0
+done
+
 to=$(cast wallet new --json | jq -r '.. | .address? // empty' | head -1)
 receipt=$(cast send "$to" --value 1ether --private-key "$DEV0_PRIVKEY" --json)
 assert "transfer 1 POTATO dev0 -> $to (block $(( $(jq -r .blockNumber <<<"$receipt") )))" \

@@ -596,6 +596,7 @@ func NewExampleApp(
 			stakingtypes.ModuleName:     staking.AppModuleBasic{},
 			govtypes.ModuleName:         gov.NewAppModuleBasic(nil),
 			ibctransfertypes.ModuleName: transfer.AppModuleBasic{},
+			evmtypes.ModuleName:         evmModuleBasic{vmModule.AppModuleBasic},
 		},
 	)
 	app.BasicModuleManager.RegisterLegacyAminoCodec(legacyAmino)
