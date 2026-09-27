@@ -36,7 +36,7 @@ class Diagram:
             if sub:
                 out += self._txt(cx, y + h / 2 - 4, title, "th", mode, t)
                 out += self._txt(cx, y + h / 2 + 14, sub, "ts", mode, u)
-            else:
+            elif title:
                 out += self._txt(cx, y + h / 2 + 5, title, "ts" if small else "th", mode, t)
             return out + "</g>"
         self.parts.append(render)
