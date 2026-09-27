@@ -6,5 +6,6 @@
   "WPOTATO": "0xEeeeeEeeeEeEeeEeEeEeeEEEeeeeEeeeeeeeEEeE",
   "chainId": 707070,
   "startBlock": 195,
-  "Feed_POTATO_USD": "0x2A6291325Ea4BaB7438c465E4B8c166ecCc4ea66"
+  "Feed_POTATO_USD": "0x2A6291325Ea4BaB7438c465E4B8c166ecCc4ea66",
+  "PotatoBridge": "0xD10655F01f2082Be5947E572e526b2398E4A9074"
 }

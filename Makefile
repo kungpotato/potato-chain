@@ -112,3 +112,7 @@ relayer:
 .PHONY: smoke-ibc
 smoke-ibc:  ## needs make relayer running
 	scripts/smoke_ibc.sh
+
+.PHONY: deploy-bridge
+deploy-bridge:  ## PotatoBridge on channel-0 -> deployments json
+	. scripts/lib.sh && cd contracts && forge script script/DeployBridge.s.sol --rpc-url potato_local --private-key $$DEV0_PRIVKEY --broadcast

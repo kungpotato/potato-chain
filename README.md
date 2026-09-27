@@ -59,7 +59,8 @@ IBC with gaia-local (see `docs/09-ibc-transfer.png`):
 ```bash
 make ibc-up && make hermes-keys && make ibc-channel   # one-time: gaia + relayer keys + channel-0
 make relayer                                          # Hermes (keep running)
-make smoke-ibc                                        # 1 POTATO potato-1 -> gaia -> back
+make deploy-bridge                                    # PotatoBridge: IBC from any EVM wallet (docs/10-ics20-precompile.png)
+make smoke-ibc                                        # CLI round trip + EVM precompile + PotatoBridge
 ```
 
 | Identity | Value |

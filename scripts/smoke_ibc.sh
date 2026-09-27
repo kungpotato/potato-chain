@@ -29,4 +29,19 @@ gaiad tx ibc-transfer transfer transfer channel-0 "$dev0" "${ONE}$voucher" --fro
 assert "gaia -> potato: 1 POTATO unescrowed to dev0 (EVM balance)" \
   wait_until '[ "$(python3 -c "print(int(\"$(cast balance "$dev0_hex")\") - $b0)")" = "$ONE" ]'
 assert "voucher burned back to previous amount" wait_until '[ "$(vbal)" = "$v0" ]'
+# From the EVM: (A) EOA calls the ICS-20 precompile directly, (B) through PotatoBridge
+ts=$(( ($(date +%s) + 600) * 1000000000 ))  # unix nanoseconds
+v1=$(vbal)
+cast send 0x0000000000000000000000000000000000000802 \
+  'transfer(string,string,string,uint256,address,string,(uint64,uint64),uint64,string)' \
+  transfer channel-0 "$DENOM" "$ONE" "$dev0_hex" "$user" '(0,0)' "$ts" smoke --private-key "$DEV0_PRIVKEY" >/dev/null
+assert "EVM (A): EOA -> ICS-20 precompile 0x0802 -> gaia" wait_until '[ "$(python3 -c "print(int(\"$(vbal)\") - $v1)")" = "$ONE" ]'
+
+bridge=$(jq -r '.PotatoBridge // empty' "$ROOT/deployments/${NETWORK:-localnet}.json")
+if [[ -n "$bridge" ]]; then
+  v2=$(vbal)
+  cast send "$bridge" 'bridge(string)' "$user" --value "$ONE" --private-key "$DEV0_PRIVKEY" >/dev/null
+  assert "EVM (B): PotatoBridge.bridge{value} -> gaia" wait_until '[ "$(python3 -c "print(int(\"$(vbal)\") - $v2)")" = "$ONE" ]'
+  assert "  bridge keeps no balance (all escrowed)" test "$(cast balance "$bridge")" = 0
+fi
 echo "ibc smoke test passed"
