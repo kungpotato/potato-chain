@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { formatUnits } from "viem";
 import { useBalance, useConnect, useConnection, useConnectors, useDisconnect, useReadContract, useSwitchChain } from "wagmi";
 import { addr, potato } from "./chain";
@@ -52,6 +53,34 @@ function Balances() {
   );
 }
 
+function Faucet() {
+  const { address } = useConnection();
+  const [msg, setMsg] = useState<string>();
+  const [busy, setBusy] = useState(false);
+  if (!address) return null;
+  async function drip() {
+    setBusy(true);
+    try {
+      const r = await fetch("/api/faucet", { method: "POST", body: JSON.stringify({ address }) });
+      const j = await r.json();
+      setMsg(r.ok ? `sent ${j.amount} POTATO (${j.hash.slice(0, 10)}…)` : j.error);
+    } catch {
+      setMsg("faucet unavailable (only in make web-dev)");
+    } finally {
+      setBusy(false);
+    }
+  }
+  return (
+    <section className="card">
+      <h2>Faucet</h2>
+      <div className="row">
+        <button onClick={drip} disabled={busy}>{busy ? "sending…" : "Get 10 POTATO"}</button>
+        {msg && <span className="muted" data-testid="faucet-msg">{msg}</span>}
+      </div>
+    </section>
+  );
+}
+
 export default function App() {
   return (
     <main>
@@ -60,6 +89,7 @@ export default function App() {
         <Wallet />
       </header>
       <Balances />
+      <Faucet />
     </main>
   );
 }
