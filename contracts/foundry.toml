@@ -9,6 +9,8 @@ optimizer_runs = 200
 # cosmos/evm v0.7.3 enables up to Prague (Osaka not yet) -> don't emit newer opcodes.
 # Older solc versions are clamped to the newest EVM version they support.
 evm_version = "prague"
+# tests read vendored sources to check the init code hash patch
+fs_permissions = [{ access = "read", path = "./out" }, { access = "read", path = "./src" }]
 
 [rpc_endpoints]
 potato_local = "http://localhost:8545"
