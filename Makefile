@@ -116,3 +116,12 @@ smoke-ibc:  ## needs make relayer running
 .PHONY: deploy-bridge
 deploy-bridge:  ## PotatoBridge on channel-0 -> deployments json
 	. scripts/lib.sh && cd contracts && forge script script/DeployBridge.s.sol --rpc-url potato_local --private-key $$DEV0_PRIVKEY --broadcast
+
+# ---- Lending (Morpho Blue; needs deploy + deploy-oracle) ----
+.PHONY: deploy-lending smoke-lending
+
+deploy-lending:  ## Morpho + WPOTATO/USDC market (LLTV 77%) + 10k USDC supply
+	. scripts/lib.sh && cd contracts && forge script script/DeployLending.s.sol --rpc-url potato_local --private-key $$DEV0_PRIVKEY --broadcast
+
+smoke-lending:
+	scripts/smoke_lending.sh

@@ -63,6 +63,13 @@ make deploy-bridge                                    # PotatoBridge: IBC from a
 make smoke-ibc                                        # CLI round trip + EVM precompile + PotatoBridge
 ```
 
+Lending (week 6, see `docs/11-lending-morpho.png`):
+
+```bash
+make deploy-lending   # Morpho Blue v1.0.0 + WPOTATO/USDC market, LLTV 77%, PotatoOracle, LinearIrm
+make smoke-lending    # collateral -> borrow -> price drop -> liquidate, on the real chain
+```
+
 | Identity | Value |
 |---|---|
 | Cosmos chain-id | `potato-1` |
