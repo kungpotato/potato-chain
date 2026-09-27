@@ -9,20 +9,31 @@ import (
 	upgradetypes "github.com/cosmos/cosmos-sdk/x/upgrade/types"
 )
 
-// UpgradeName defines the on-chain upgrade name for the sample EVMD upgrade
-// from v0.6.0 to v0.7.0.
-//
-// NOTE: This upgrade defines a reference implementation of what an upgrade
-// could look like when an application is migrating from EVMD version
-// v0.6.x to v0.7.0.
-const UpgradeName = "v0.6.0-to-v0.7.0"
+// UpgradeName is the on-chain plan name a MsgSoftwareUpgrade proposal must use to trigger
+// this binary's migration (see scripts/upgrade_drill.sh, docs/12-gov-upgrade.png).
+const UpgradeName = "potato-v2"
+
+// UpgradeBlockMaxGas is the new consensus block gas limit set by the potato-v2 upgrade
+// (genesis uses 10M; visible to wallets as eth_getBlockByNumber.gasLimit).
+const UpgradeBlockMaxGas int64 = 30_000_000
 
 func (app EVMD) RegisterUpgradeHandlers() {
 	app.UpgradeKeeper.SetUpgradeHandler(
 		UpgradeName,
-		func(ctx context.Context, _ upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
+		func(ctx context.Context, plan upgradetypes.Plan, fromVM module.VersionMap) (module.VersionMap, error) {
 			sdkCtx := sdk.UnwrapSDKContext(ctx)
-			sdkCtx.Logger().Debug("this is a debug level message to test that verbose logging mode has properly been enabled during a chain upgrade")
+
+			params, err := app.ConsensusParamsKeeper.ParamsStore.Get(ctx)
+			if err != nil {
+				return nil, err
+			}
+			old := params.Block.MaxGas
+			params.Block.MaxGas = UpgradeBlockMaxGas
+			if err := app.ConsensusParamsKeeper.ParamsStore.Set(ctx, params); err != nil {
+				return nil, err
+			}
+			sdkCtx.Logger().Info("potato-v2: raised block max gas", "from", old, "to", UpgradeBlockMaxGas, "height", plan.Height)
+
 			return app.ModuleManager.RunMigrations(ctx, app.Configurator(), fromVM)
 		},
 	)
@@ -33,10 +44,8 @@ func (app EVMD) RegisterUpgradeHandlers() {
 	}
 
 	if upgradeInfo.Name == UpgradeName && !app.UpgradeKeeper.IsSkipHeight(upgradeInfo.Height) {
-		storeUpgrades := storetypes.StoreUpgrades{
-			Added: []string{},
-		}
-		// configure store loader that checks if version == upgradeHeight and applies store upgrades
+		// potato-v2 adds/removes no modules; list new store keys here in future upgrades.
+		storeUpgrades := storetypes.StoreUpgrades{}
 		app.SetStoreLoader(upgradetypes.UpgradeStoreLoader(upgradeInfo.Height, &storeUpgrades))
 	}
 }

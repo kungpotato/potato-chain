@@ -1,7 +1,7 @@
 # 4-validator potato-chain localnet. Generate homes first: scripts/localnet_init.sh
 # See docs/03-localnet-docker.png.
 x-potatod: &potatod
-  image: potato-chain/potatod:dev
+  image: potato-chain/potatod:${POTATOD_TAG:-dev}  # upgrade drill switches to :v2
   build: .
   restart: unless-stopped
   networks: [potato-net]
