@@ -1,0 +1,6 @@
+# build output
+/build/
+*.test
+# local chain data (never commit keys/genesis state)
+/.localnet/
+.DS_Store
