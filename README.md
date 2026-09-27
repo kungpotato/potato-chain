@@ -11,7 +11,7 @@ EVM-compatible Cosmos appchain for learning, built block by block on top of
 | 2 | ④ JSON-RPC, wallets (MetaMask/Keplr), explorer, faucet | done (Keplr pending) |
 | 3 | ⑦ ⑧ Preinstalls, WETH-like token, mock USDC, DEX | done |
 | 4-5 | ⑥ IBC/Hyperlane bridge, oracle, indexer | done (IBC w/ gaia; Hyperlane pending) |
-| 6 | Lending, frontend, `x/gov` upgrade drill | — |
+| 6 | Lending, frontend, `x/gov` upgrade drill | done |
 
 ## Quickstart
 
@@ -74,6 +74,12 @@ Upgrade drill (see `docs/12-gov-upgrade.png`): propose `potato-v2` -> 4 validato
 
 ```bash
 make upgrade-image && make upgrade-drill
+```
+
+Frontend (week 6, see `docs/13-frontend.png`): swap, market (Ponder), lend (Morpho), IBC bridge, Keplr, dev faucet.
+
+```bash
+make web-install && make web-dev   # http://localhost:5173 (dev burner wallet + /api/faucet)
 ```
 
 | Identity | Value |

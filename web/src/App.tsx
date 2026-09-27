@@ -6,6 +6,7 @@ import { erc20Abi } from "./abis";
 import { Market, Swap } from "./Swap";
 import { Bridge } from "./Bridge";
 import { Lend } from "./Lend";
+import { KeplrPanel } from "./Keplr";
 
 function short(a: string) {
   return `${a.slice(0, 6)}…${a.slice(-4)}`;
@@ -97,6 +98,7 @@ export default function App() {
       <Swap />
       <Lend />
       <Bridge />
+      <KeplrPanel />
     </main>
   );
 }
