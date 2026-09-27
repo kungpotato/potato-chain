@@ -108,3 +108,7 @@ ibc-channel:  ## one-time: clients + connection + transfer channel-0
 
 relayer:
 	tools/bin/hermes --config ibc/hermes/config.toml start
+
+.PHONY: smoke-ibc
+smoke-ibc:  ## needs make relayer running
+	scripts/smoke_ibc.sh

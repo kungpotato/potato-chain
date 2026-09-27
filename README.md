@@ -10,7 +10,7 @@ EVM-compatible Cosmos appchain for learning, built block by block on top of
 | 1 | ① Consensus (CometBFT) + ② Execution (Cosmos SDK + EVM) | done |
 | 2 | ④ JSON-RPC, wallets (MetaMask/Keplr), explorer, faucet | done (Keplr pending) |
 | 3 | ⑦ ⑧ Preinstalls, WETH-like token, mock USDC, DEX | done |
-| 4-5 | ⑥ IBC/Hyperlane bridge, oracle, indexer | — |
+| 4-5 | ⑥ IBC/Hyperlane bridge, oracle, indexer | done (IBC w/ gaia; Hyperlane pending) |
 | 6 | Lending, frontend, `x/gov` upgrade drill | — |
 
 ## Quickstart
@@ -52,6 +52,14 @@ make indexer-install && make indexer-dev   # Ponder -> http://localhost:42069/gr
 make smoke-indexer                         # swap on-chain, assert indexer == getReserves()
 make deploy-oracle                         # POTATO/USD mock feed (Chainlink ABI), see docs/08-oracle.png
 scripts/oracle_push.sh 2.15                # push a price (dev stand-in for a keeper)
+```
+
+IBC with gaia-local (see `docs/09-ibc-transfer.png`):
+
+```bash
+make ibc-up && make hermes-keys && make ibc-channel   # one-time: gaia + relayer keys + channel-0
+make relayer                                          # Hermes (keep running)
+make smoke-ibc                                        # 1 POTATO potato-1 -> gaia -> back
 ```
 
 | Identity | Value |
