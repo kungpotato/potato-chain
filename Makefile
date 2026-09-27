@@ -134,3 +134,15 @@ upgrade-image:  ## pre-stage the next binary as potato-chain/potatod:v2
 
 upgrade-drill:
 	scripts/upgrade_drill.sh
+
+# ---- Frontend (Vite + wagmi; needs localnet + deployments) ----
+.PHONY: web-install web-dev web-build
+
+web-install:
+	cd web && npm ci
+
+web-dev:  ## http://localhost:5173 (burner wallet + dev faucet enabled)
+	. scripts/lib.sh && cd web && VITE_DEV_BURNER=1 POTATO_FAUCET_KEY=$$DEV0_PRIVKEY npx vite --port 5173 --strictPort
+
+web-build:
+	cd web && npm run build
