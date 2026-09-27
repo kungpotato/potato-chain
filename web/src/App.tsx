@@ -5,6 +5,7 @@ import { addr, potato } from "./chain";
 import { erc20Abi } from "./abis";
 import { Market, Swap } from "./Swap";
 import { Bridge } from "./Bridge";
+import { Lend } from "./Lend";
 
 function short(a: string) {
   return `${a.slice(0, 6)}…${a.slice(-4)}`;
@@ -94,6 +95,7 @@ export default function App() {
       <Faucet />
       <Market />
       <Swap />
+      <Lend />
       <Bridge />
     </main>
   );
