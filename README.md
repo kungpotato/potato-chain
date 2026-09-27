@@ -45,6 +45,13 @@ make seed-pool        # first liquidity: 100 POTATO + 200 USDC (real chain, uses
 make smoke-dex        # swap round trip on-chain
 ```
 
+Indexer (weeks 4-5, see `docs/07-indexer.png`):
+
+```bash
+make indexer-install && make indexer-dev   # Ponder -> http://localhost:42069/graphql
+make smoke-indexer                         # swap on-chain, assert indexer == getReserves()
+```
+
 | Identity | Value |
 |---|---|
 | Cosmos chain-id | `potato-1` |

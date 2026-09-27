@@ -1,0 +1,23 @@
+{
+  "name": "potato-indexer",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "ponder dev",
+    "start": "ponder start",
+    "codegen": "ponder codegen",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "hono": "^4.5.0",
+    "ponder": "0.17.12",
+    "viem": "2.35.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=18.18"
+  }
+}

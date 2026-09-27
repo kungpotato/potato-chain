@@ -70,3 +70,15 @@ seed-pool:
 
 smoke-dex:
 	scripts/smoke_dex.sh
+
+# ---- Indexer (Ponder; needs localnet + deployed DEX) ----
+.PHONY: indexer-install indexer-dev smoke-indexer
+
+indexer-install:
+	cd indexer && npm ci
+
+indexer-dev:  ## GraphQL at http://localhost:42069/graphql
+	cd indexer && npx ponder dev --disable-ui
+
+smoke-indexer:
+	scripts/smoke_indexer.sh
